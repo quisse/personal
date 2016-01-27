@@ -42,10 +42,10 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a class="button" href="#">About</a>
+                        <a class="button {{#if active_blog}}active{{/if}}" href="/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="button" href="#">Blog</a>
+                        <a class="button {{#if active_about}}active{{/if}}" href="/">Blog</a>
                     </li>
                 </ul>
             </nav>
@@ -57,11 +57,10 @@
             <div class="footer">
                 <div class="pure-menu pure-menu-horizontal">
                     <ul>
-                        <li class="pure-menu-item"><a href="http://purecss.io/" class="pure-menu-link">About</a></li>
-                        <li class="pure-menu-item"><a href="http://twitter.com/yuilibrary/" class="pure-menu-link">Blog</a>
+                        <li class="pure-menu-item"><a href="/about" class="pure-menu-link">About</a></li>
+                        <li class="pure-menu-item"><a href="/" class="pure-menu-link">Blog</a>
                         </li>
-                        <li class="pure-menu-item"><a href="http://github.com/yahoo/pure/"
-                                                      class="pure-menu-link">GitHub</a></li>
+                        <li class="pure-menu-item"><a href="https://github.com/quisse/personal" class="pure-menu-link" target="_blank">Find this project on Github!</a></li>
                     </ul>
                 </div>
             </div>

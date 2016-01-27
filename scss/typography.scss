@@ -180,7 +180,7 @@ h3 {
 
 .footer {
   a {
-    color: #ccc;
+    color: $secondaryColor;
     font-size: 80%;
   }
   .pure-menu a {
@@ -218,8 +218,7 @@ ul.social {
     padding: 5px;
     i {
       color: darken($tertiaryColor, 30%);
-      &:hover,
-      &:active {
+      &:hover {
         color: $quaternaryColor;
       }
     }
