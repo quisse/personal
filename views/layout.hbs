@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog by Tommy Quissens">
+    <title>Blog by Tommy Quissens</title>
+    <link rel="stylesheet" href="stylesheets/style.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+    <![endif]-->
+
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
+    <!--<![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<div class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+            <h1 class="brand-title">Tommy Quissens</h1>
+            <h2 class="brand-tagline">A (junior) web developer &amp; JavaScript enthusiast.</h2>
+
+                <ul class="social">
+                    <li class=""><a href="https://www.facebook.com/Quisse" class="" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                    <li class=""><a href="https://twitter.com/tommyquissens" class="" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                    <li class=""><a href="https://www.linkedin.com/in/tommyquissens" class="" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                    <li class=""><a href="https://github.com/quisse" class="" target="_blank"><i class="fa fa-github"></i></a></li>
+                    <li class=""><a href="https://www.instagram.com/tommyquissens/" class="" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                </ul>
+
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a class="button" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="button" href="#">Blog</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="content pure-u-1 pure-u-md-3-4">
+        <div>
+            {{{body}}}
+            <div class="footer">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul>
+                        <li class="pure-menu-item"><a href="http://purecss.io/" class="pure-menu-link">About</a></li>
+                        <li class="pure-menu-item"><a href="http://twitter.com/yuilibrary/" class="pure-menu-link">Blog</a>
+                        </li>
+                        <li class="pure-menu-item"><a href="http://github.com/yahoo/pure/"
+                                                      class="pure-menu-link">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>

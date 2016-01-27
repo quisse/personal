@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     rename = require('gulp-rename');
 
-var input = './scss/**/*.scss',
+var input = './scss/style.scss',
+    target = './scss/**/*.scss';
     output = './public/stylesheets',
     sassOptions = {
         errLogToConsole: true,
@@ -32,7 +33,7 @@ gulp.task('sass', function () {
 gulp.task('watch', function () {
     livereload.listen();
     return gulp
-        .watch(input, ['sass'])
+        .watch(target, ['sass']);
         //.on('change', function(event){
         //
         //});
