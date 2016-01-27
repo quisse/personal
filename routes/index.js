@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 // tweak for preventing dyno to go to sleep
-router.get('/alive', function(res){
+router.get('/alive', function(req,res){
   res.send('yes');
 });
 
