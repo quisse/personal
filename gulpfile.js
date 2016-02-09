@@ -2,7 +2,6 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
-//livereload = require('gulp-livereload'),
     rename = require('gulp-rename'),
     server = require('gulp-express'),
     env = require('gulp-env');
@@ -21,7 +20,7 @@ var sassConfig = {
     },
     expressConfig = {
         source: 'bin/www',
-        js: ['views/**/*', 'routes/**/*.js'],
+        js: ['views/**/*', 'routes/**/*.js', 'models/**/*.js'],
         options: {
         }
     };
@@ -52,6 +51,7 @@ gulp.task('server', function () {
     env({
         file:'.env.json'
     });
+
     server.run([expressConfig.source],[expressConfig.options]);
 
     gulp.watch([sassConfig.target], ['sass']);
