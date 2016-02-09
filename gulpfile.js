@@ -2,9 +2,10 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     autoprefixer = require('gulp-autoprefixer'),
-    //livereload = require('gulp-livereload'),
+//livereload = require('gulp-livereload'),
     rename = require('gulp-rename'),
-    server = require('gulp-express');
+    server = require('gulp-express'),
+    env = require('gulp-env');
 
 var sassConfig = {
         input: './scss/style.scss',
@@ -19,8 +20,10 @@ var sassConfig = {
         }
     },
     expressConfig = {
-        source : 'bin/www',
-        js:['views/**/*','routes/**/*.js']
+        source: 'bin/www',
+        js: ['views/**/*', 'routes/**/*.js'],
+        options: {
+        }
     };
 
 gulp.task('sass', function () {
@@ -46,11 +49,14 @@ gulp.task('sass', function () {
 //});
 
 gulp.task('server', function () {
-    server.run([expressConfig.source]);
+    env({
+        file:'.env.json'
+    });
+    server.run([expressConfig.source],[expressConfig.options]);
 
     gulp.watch([sassConfig.target], ['sass']);
-    gulp.watch([sassConfig.output+'/**/*.css'], server.notify);
-    gulp.watch(expressConfig.js, function(event){
+    gulp.watch([sassConfig.output + '/**/*.css'], server.notify);
+    gulp.watch(expressConfig.js, function (event) {
         server.run([expressConfig.source]);
         server.notify(event)
     });
