@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var about = require('./routes/about');
 
 var app = express();
@@ -26,8 +26,17 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/about', about);
+//app.use('/admin', admin)// Site-wide options, and their default values
+require('formage').init(app, express, require('./models'), {
+  title: 'Admin',
+  root: '/admin',
+  default_section: 'main',
+  username: process.env.ADMIN,
+  password: process.env.ADMIN_PASSWORD,
+  admin_users_gui: true
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -2,10 +2,16 @@ var express = require('express');
 var router = express.Router();
 
 var Post = require("../models/post").Post;
-Post.findAllPosts();
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { active_blog:true, title: 'joskee' });
+  Post.findAllPosts().then(function(result){
+    console.log(new Date().toISOString());
+    console.log(result);
+  });
+  Post.findPinnedPosts().then(function(result){
+    console.log(result);
+  });
+  res.render('index', { posts: Post.findAllPosts(), title: 'joskee' });
 });
 
 // tweak for preventing dyno to go to sleep
