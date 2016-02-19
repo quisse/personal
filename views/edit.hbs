@@ -24,8 +24,6 @@
 
                 // Collect the contents of each region into a FormData instance
                 payload = new FormData();
-                console.log(payload);
-                console.log(regions);
                 for (name in regions) {
                     if (regions.hasOwnProperty(name)) {
                         payload.append(name, regions[name]);
@@ -47,10 +45,9 @@
                         }
                     }
                 };
-
                 xhr = new XMLHttpRequest();
                 xhr.addEventListener('readystatechange', onStateChange);
-                xhr.open('POST', '/');
+                xhr.open('POST',window.location.pathname);
                 xhr.send(payload);
             });
         })

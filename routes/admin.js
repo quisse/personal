@@ -3,6 +3,7 @@ var router = express.Router();
 var forms = require('forms');
 var fields = forms.fields;
 var validators = forms.validators;
+var multiparty = require('multiparty');
 
 var Post = require("../models/post")/*.Post*/;
 
@@ -13,7 +14,9 @@ add_form = forms.create({
 
 /* GET routes page. */
 router.get('/', function(req, res, next) {
-    res.render('admin', { posts: /*Post.findAllPosts()*/ "", add_form :add_form.toHTML()});
+    Post.getAllPosts().then(function(posts){
+        res.render('admin', { posts: posts, add_form :add_form.toHTML()});
+    });
 });
 
 router.post('/', function(req,res){
@@ -50,8 +53,19 @@ router.get('/:id', function(req,res){
 });
 
 router.post('/:id', function(req,res){
-    console.log(req.params.id);
-    res.render('edit', {id:''})
+    Post.getPost(req.params.id).then(function(post){
+        var form = new multiparty.Form();
+
+        form.parse(req, function(err, fields, files) {
+            console.log(fields.content[0]);
+            post.content = fields.content[0];
+            post.save(function (err) {
+                if (err) return handleError(err);
+                // saved!
+                res.sendStatus(200);
+            });
+        });
+    });
 });
 
 module.exports = router;

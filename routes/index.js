@@ -4,14 +4,15 @@ var router = express.Router();
 var Post = require("../models/post").Post;
 /* GET routes page. */
 router.get('/', function(req, res, next) {
-  Post.findAllPosts().then(function(result){
-    console.log(new Date().toISOString());
-    console.log(result);
-  });
-  Post.findPinnedPosts().then(function(result){
-    console.log(result);
-  });
-  res.render('index', { posts: Post.findAllPosts(), title: 'joskee' });
+  //Post.findAllPosts().then(function(result){
+  //  console.log(new Date().toISOString());
+  //  console.log(result);
+  //});
+  //Post.findPinnedPosts().then(function(result){
+  //  console.log(result);
+  //});
+  console.log(process.env.PUBLISHED);
+  res.render('index', { posts: '', development : process.env.PUBLISHED});
 });
 
 // tweak for preventing dyno to go to sleep
