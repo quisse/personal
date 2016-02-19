@@ -1,36 +1,78 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    SchemaTypes = Schema.Types,
-    ObjectId = SchemaTypes.ObjectId;
-
-module.exports = new Schema({
-
-    title: String,
-    pinned: Boolean,
-    intro: String,
-    content: String,
+    Types = Schema.Types,
+    ObjectId = Types.ObjectId;
+var schema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    pinned: {
+        type: Boolean,
+        required: true
+    },
+    content: {
+        type: String,
+        //required: true,
+        default: function () {
+            return "";
+        }
+    },
     created_at: {
         type: Date,
-        default: function(){
+        required: true,
+        default: function () {
+            return Date.now();
+        }
+    },
+    updated_at: {
+        type: Date,
+        required: true,
+        default: function () {
             return Date.now();
         }
     }
 });
 
-module.exports.statics.findAllPosts = function(){
-    return this.find().where('pinned', false).exec(function(err, posts){
-        if(err) {
+schema.pre('save', function (next) {
+    this.updated_at = Date.now();
+    next();
+});
+
+schema.statics.getPost = function(id){
+    return this.findOne({'_id':id}).exec(function (err, post) {
+        if (err) {
+            return console.error(err);
+        }
+        return post;
+    });
+};
+
+schema.statics.getAllPosts  =function(){
+    return this.find().exec(function (err, posts) {
+        if (err) {
             return console.error(err);
         }
         return posts;
     });
 };
 
-module.exports.statics.findPinnedPosts = function(){
-    return this.find().where('pinned', true).exec(function(err, posts){
-        if(err) {
+schema.statics.getNotPinnedPosts = function () {
+    return this.find().where('pinned', false).exec(function (err, posts) {
+        if (err) {
             return console.error(err);
         }
         return posts;
     });
 };
+
+schema.statics.getPinnedPosts = function () {
+    return this.find().where('pinned', true).exec(function (err, posts) {
+        if (err) {
+            return console.error(err);
+        }
+        return posts;
+    });
+};
+
+var posts = module.exports = mongoose.model('posts', schema);
