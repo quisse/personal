@@ -4,13 +4,12 @@
             {{this.title}}
         </h2>
         <p class="post-meta">
-            <a class="post-category">Tommy Quissens</a>
-            <a class="post-category">Quisse</a>
-            <a class="post-category">Curriculum Vitae</a>
-            <a class="post-category">CV</a>
+            {{#each this.tags}}
+                <a class="post-category">{{this}}</a>
+            {{/each}}
         </p>
     </header>
     <div class="post-description">
-        {{this.content}}
+        {{{this.content}}}
     </div>
 </section>

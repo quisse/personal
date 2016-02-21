@@ -23,6 +23,7 @@ var schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required:true,
     },
+    tags:[String],
     created_at: {
         type: Date,
         required: true,

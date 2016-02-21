@@ -1,3 +1,6 @@
+{{#section 'head'}}
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.tagsinput.min.css" />
+{{/section}}
 <form method="post" class="pure-form">
     <fieldset>
         {{{add_form}}}
@@ -10,11 +13,19 @@
             at: {{dateFormat this.created_at "MMMM Do YYYY"}} updated
             at: {{dateFormat this.updated_at "MMMM Do YYYY"}}
             <button onclick="deletePost('{{this.id}}')">delete</button>
+            {{#each this.tags}}
+                <a class="post-category">{{this}}</a>
+            {{/each}}
+            <!--<input class="tags" value="{{#each this.tags}}{{this}},{{/each}}" />-->
         </li>
     {{/each}}
 </ul>
 {{#section 'foot'}}
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/jquery.tagsinput.js"></script>
     <script type="text/javascript">
+        $('#id_tags').tagsInput();
+        $('.tags').tagsInput();
         function deletePost(id){
             function onStateChange(ev) {
                 // Check if the request is finished

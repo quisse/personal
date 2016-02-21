@@ -11,6 +11,7 @@ var User = require('../models/user');
 
 add_form = forms.create({
     title: fields.string({required:true}),
+    tags: fields.string(),
     pinned: fields.boolean()
 });
 
@@ -33,8 +34,13 @@ router.post('/', isLoggedIn, function(req,res){
                 success: function(form){
                     var data = form.data;
                     console.log('validated');
-                    console.log(data);
                     data.owner = user._id;
+                    var tags = data.tags.split(',');
+                    data.tags=[];
+                    tags.forEach(function(tag){
+                        data.tags.push(tag);
+                    });
+                    console.log(data);
                     Post.create(data, function(err, post){
                         console.log(err);
                         console.log(post);
