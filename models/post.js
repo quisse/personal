@@ -15,6 +15,10 @@ var schema = new mongoose.Schema({
             return "";
         }
     },
+    deleted:{
+        type:Boolean,
+        default:false
+    },
     owner:{
         type: mongoose.Schema.Types.ObjectId,
         required:true,
@@ -51,7 +55,7 @@ schema.statics.getPost = function(id){
 };
 
 schema.statics.getAllPosts  =function(){
-    return this.find().exec(function (err, posts) {
+    return this.find().where('deleted', false).exec(function (err, posts) {
         if (err) {
             return console.error(err);
         }
@@ -60,7 +64,7 @@ schema.statics.getAllPosts  =function(){
 };
 
 schema.statics.getNotPinnedPosts = function () {
-    return this.find().where('pinned', false).exec(function (err, posts) {
+    return this.find().where('pinned', false).where('deleted', false).exec(function (err, posts) {
         if (err) {
             return console.error(err);
         }
@@ -69,7 +73,7 @@ schema.statics.getNotPinnedPosts = function () {
 };
 
 schema.statics.getPinnedPosts = function () {
-    return this.find().where('pinned', true).exec(function (err, posts) {
+    return this.find().where('pinned', true).where('deleted', false).exec(function (err, posts) {
         if (err) {
             return console.error(err);
         }

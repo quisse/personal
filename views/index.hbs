@@ -71,5 +71,19 @@
     </div>
 {{/unless}}
 {{#if published}}
-
+    {{#if pinned}}
+        <div class="posts">
+            <h1 class="content-subhead">Pinned Post</h1>
+            {{#each pinned}}
+                {{> postPreview this}}
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if posts}}
+        <div class="posts">
+            {{#each posts}}
+                {{> postPreview this}}
+            {{/each}}
+        </div>
+    {{/if}}
 {{/if}}

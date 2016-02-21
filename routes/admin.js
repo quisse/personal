@@ -78,7 +78,19 @@ router.post('/post/:id', isLoggedIn,function(req,res){
 });
 
 router.delete('/post/:id', isLoggedIn,function(req,res){
-
+    Post.getPost(req.params.id).then(function(post){
+        User.getUser(req.user._id).then(function(user){
+            if(post.owner.toString() == user._id.toString()){
+                console.log('delete');
+                post.deleted = true;
+                post.save(function (err) {
+                    if (err) return handleError(err);
+                    // saved!
+                    res.sendStatus(200);
+                });
+            }
+        });
+    });
 });
 
 router.get('/signup', function(req, res){
