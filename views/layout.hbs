@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="pure-g">
-    <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="sidebar pure-u-1 pure-u-lg-1-4">
         <div class="header">
             <h1 class="brand-title">Tommy Quissens</h1>
             <h2 class="brand-tagline">A (junior) web developer &amp; JavaScript enthusiast.</h2>
@@ -36,25 +36,16 @@
 
             <nav class="nav">
                 <ul class="nav-list">
-                    <li class="nav-item">
-                        <a class="button" href="/about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="button" href="/">Blog</a>
-                    </li>
                     {{#if user}}
                         <li class="nav-item">
                             <a class="button" href="/admin/logout">Logout</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="button" href="/">Blog</a>
                         </li>
                     {{/if}}
                 </ul>
             </nav>
         </div>
     </div>
-    <div class="content pure-u-1 pure-u-md-3-4">
+    <div class="content pure-u-1 pure-u-lg-3-4">
         <div>
             {{{body}}}
             <div class="footer">
