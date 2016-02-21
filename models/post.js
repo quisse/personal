@@ -1,8 +1,6 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    Types = Schema.Types,
-    ObjectId = Types.ObjectId;
-var schema = new Schema({
+var mongoose = require('mongoose');
+
+var schema = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -13,10 +11,13 @@ var schema = new Schema({
     },
     content: {
         type: String,
-        //required: true,
         default: function () {
             return "";
         }
+    },
+    owner:{
+        type: mongoose.Schema.Types.ObjectId,
+        required:true,
     },
     created_at: {
         type: Date,
@@ -40,7 +41,8 @@ schema.pre('save', function (next) {
 });
 
 schema.statics.getPost = function(id){
-    return this.findOne({'_id':id}).exec(function (err, post) {
+    //todo check dis
+    return this.findById(id).exec(function (err, post) {
         if (err) {
             return console.error(err);
         }
@@ -75,4 +77,4 @@ schema.statics.getPinnedPosts = function () {
     });
 };
 
-var posts = module.exports = mongoose.model('posts', schema);
+var post = module.exports = mongoose.model('post', schema);

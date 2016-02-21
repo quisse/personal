@@ -6,6 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var hbs = require('hbs');
+var passport = require('passport');
+var flash = require('connect-flash');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var admin = require('./routes/admin');
@@ -13,6 +16,8 @@ var admin = require('./routes/admin');
 var app = express();
 
 mongoose.connect(process.env.MONGO);
+
+require('./config/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +37,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({secret:process.env.SECRET,resave:true, saveUninitialized:true}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use('/', index);
 app.use('/admin', admin);

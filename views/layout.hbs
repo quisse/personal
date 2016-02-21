@@ -37,11 +37,19 @@
             <nav class="nav">
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a class="button {{#if active_blog}}active{{/if}}" href="/about">About</a>
+                        <a class="button" href="/about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="button {{#if active_about}}active{{/if}}" href="/">Blog</a>
+                        <a class="button" href="/">Blog</a>
                     </li>
+                    {{#if user}}
+                        <li class="nav-item">
+                            <a class="button" href="/admin/logout">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="button" href="/">Blog</a>
+                        </li>
+                    {{/if}}
                 </ul>
             </nav>
         </div>
