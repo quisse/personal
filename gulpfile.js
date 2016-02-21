@@ -20,7 +20,7 @@ var sassConfig = {
     },
     expressConfig = {
         source: 'bin/www',
-        js: ['views/**/*', 'routes/**/*.js', 'models/**/*.js'],
+        js: ['views/**/*', 'routes/**/*.js', 'models/**/*.js', 'app.js'],
         options: {
         }
     };

@@ -17,4 +17,10 @@ router.get('/alive', function(req,res){
   res.send('yes');
 });
 
+router.get('/post/:id', function(req,res){
+  Post.getPost(req.params.id).then(function(post){
+    res.render('post', {post:post});
+  });
+});
+
 module.exports = router;

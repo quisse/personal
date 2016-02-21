@@ -28,6 +28,13 @@ hbs.registerHelper('section', function (name, options) {
     this._sections[name] = options.fn(this);
     return null;
 });
+hbs.registerHelper('preview', function(content){
+    var maxLength = 200;
+    var trimmed = content.substr(0,maxLength);
+    trimmed = trimmed.substr(0,Math.min(trimmed.length, trimmed.lastIndexOf(' ')));
+    console.log(trimmed);
+    return trimmed;
+});
 hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
