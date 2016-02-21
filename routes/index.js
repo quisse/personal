@@ -1,28 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
-var Post = require("../models/post").Post;
+var Post = require("../models/post");
 /* GET routes page. */
 router.get('/', function(req, res, next) {
-  //Post.findAllPosts().then(function(result){
-  //  console.log(new Date().toISOString());
-  //  console.log(result);
-  //});
-  //Post.findPinnedPosts().then(function(result){
-  //  console.log(result);
-  //});
+  Post.getNotPinnedPosts().then(function(posts){
+    Post.getPinnedPosts().then(function(pinned){
+      res.render('index', { posts: posts, pinned:pinned, published: process.env.PUBLISHED});
+    });
+  });
   console.log(process.env.PUBLISHED);
-  res.render('index', { posts: '', development : process.env.PUBLISHED});
 });
 
 // tweak for preventing dyno to go to sleep
 router.get('/alive', function(req,res){
   res.send('yes');
-});
-
-// tweak for preventing dyno to go to sleep
-router.get('/about', function(req,res){
-  res.render('about');
 });
 
 module.exports = router;

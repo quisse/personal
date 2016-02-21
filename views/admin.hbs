@@ -1,9 +1,38 @@
-<form method="post">
-    {{{add_form}}}
-    <button type="submit">submit</button>
+<form method="post" class="pure-form">
+    <fieldset>
+        {{{add_form}}}
+        <button type="submit">submit</button>
+    </fieldset>
 </form>
 <ul>
     {{#each posts}}
-        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created at: {{this.created_at}} updated at: {{this.updated_at}}</li>
+        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created
+            at: {{dateFormat this.created_at "MMMM Do YYYY"}} updated
+            at: {{dateFormat this.updated_at "MMMM Do YYYY"}}
+            <button onclick="deletePost('{{this.id}}')">delete</button>
+        </li>
     {{/each}}
 </ul>
+{{#section 'foot'}}
+    <script type="text/javascript">
+        function deletePost(id){
+            function onStateChange(ev) {
+                // Check if the request is finished
+                if (ev.target.readyState == 4) {
+                    if (ev.target.status == '200') {
+                        // Save was successful, notify the user with a flash
+                        console.log('ok');
+                        location.reload();
+                    } else {
+                        // Save failed, notify the user with a flash
+                        console.log('no');
+                    }
+                }
+            };
+            xhr = new XMLHttpRequest();
+            xhr.addEventListener('readystatechange', onStateChange);
+            xhr.open('delete', '/admin/post/'+id);
+            xhr.send();
+        }
+    </script>
+{{/section}}

@@ -14,6 +14,7 @@
     "express": "~4.13.1",
     "express-session": "^1.13.0",
     "forms": "^1.1.4",
+    "handlebars-dateformat": "^1.0.1",
     "hbs": "~3.1.0",
     "less-middleware": "1.0.x",
     "mongoose": "^4.4.3",

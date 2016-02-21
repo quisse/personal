@@ -28,6 +28,8 @@ hbs.registerHelper('section', function (name, options) {
     this._sections[name] = options.fn(this);
     return null;
 });
+hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

@@ -144,6 +144,10 @@ h3 {
   color: #fff;
   background: #999;
   font-size: 80%;
+  &:hover{
+    background: $quaternaryColor;
+    text-decoration:none;
+  }
 }
 
 .post-category-design {
