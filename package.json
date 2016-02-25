@@ -15,6 +15,7 @@
     "express": "~4.13.1",
     "express-session": "^1.13.0",
     "forms": "^1.1.4",
+    "fs": "0.0.2",
     "handlebars-dateformat": "^1.0.1",
     "hbs": "~3.1.0",
     "less-middleware": "1.0.x",
@@ -28,7 +29,6 @@
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
-    "fs": "0.0.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-env": "^0.4.0",
