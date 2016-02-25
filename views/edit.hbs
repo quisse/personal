@@ -2,18 +2,204 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/content-tools.min.css">
 {{/section}}
 <a href="/admin">back</a>
-    <div data-editable data-name="content">
-        {{#unless content }}
+<div data-editable data-name="content">
+    {{#unless content }}
         <p>this is the intro paragraph</p>
-        {{/unless}}
-        {{{content}}}
-    </div>
+    {{/unless}}
+    {{{content}}}
+</div>
 <a href="/admin">back</a>
 {{#section 'foot'}}
     <script src="/javascripts/content-tools.min.js"></script>
     <script>
-        window.addEventListener('load', function(){
-            var editor;
+        var ImageUploader;
+
+        ImageUploader = (function () {
+            var image, xhr, xhrComplete, xhrProgress;
+            var target = window.location.href + '/img';
+
+            function ImageUploader(dialog) {
+                this._dialog = dialog;
+                this._dialog.bind('cancel', (function (_this) {
+                    return function () {
+                        return _this._onCancel();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.cancelUpload', (function (_this) {
+                    return function () {
+                        return _this._onCancelUpload();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.clear', (function (_this) {
+                    return function () {
+                        return _this._onClear();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.fileReady', (function (_this) {
+                    return function (files) {
+                        return _this._onFileReady(files);
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.mount', (function (_this) {
+                    return function () {
+                        return _this._onMount();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.rotateCCW', (function (_this) {
+                    return function () {
+                        return _this._onRotateCCW();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.rotateCW', (function (_this) {
+                    return function () {
+                        return _this._onRotateCW();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.save', (function (_this) {
+                    return function () {
+                        return _this._onSave();
+                    };
+                })(this));
+                this._dialog.bind('imageUploader.unmount', (function (_this) {
+                    return function () {
+                        return _this._onUnmount();
+                    };
+                })(this));
+            }
+
+            ImageUploader.prototype._onCancel = function () {
+            };
+
+            ImageUploader.prototype._onCancelUpload = function () {
+                clearTimeout(this._uploadingTimeout);
+                // Cancel the current upload
+
+                // Stop the upload
+                if (xhr) {
+                    xhr.upload.removeEventListener('progress', xhrProgress);
+                    xhr.removeEventListener('readystatechange', xhrComplete);
+                    xhr.abort();
+                }
+
+                return this._dialog.state('empty');
+            };
+
+            ImageUploader.prototype._onClear = function () {
+                image = null;
+                return this._dialog.clear();
+            };
+
+            ImageUploader.prototype._onFileReady = function (file) {
+                var formData;
+                xhrProgress = function (ev) {
+                    this._dialog.progress((ev.loaded / ev.total) * 100);
+                };
+                xhrComplete = function (ev) {
+                    var response;
+                    if (ev.target.readyState != 4) {
+                        return;
+                    }
+                    xhr = null;
+                    xhrProgress = null;
+                    xhrComplete = null;
+                    if (parseInt(ev.target.status) == 200) {
+                        response = JSON.parse(ev.target.responseText);
+
+                        image={
+                            size:response.size,
+                            url:response.url,
+                        }
+                        console.log(image);
+                    } else {
+                        new ContentTools.FlashUI('no');
+                    }
+                };
+                this._dialog.state('uploading');
+                this._dialog.progress(0);
+                xhr = new XMLHttpRequest();
+
+                formData = new FormData();
+                formData.append('image', file);
+                xhr.addEventListener('readystatechange', xhrComplete);
+                console.log(this);
+                console.log(ImageUploader);
+                xhr.open('POST', target, true);
+                xhr.send(formData);
+
+//                var upload;
+//                this._dialog.progress(0);
+//                this._dialog.state('uploading');
+//                upload = (function(_this) {
+//                    return function() {
+//                        var progress;
+//                        progress = _this._dialog.progress();
+//                        progress += 1;
+//                        if (progress <= 100) {
+//                            _this._dialog.progress(progress);
+//                            return _this._uploadingTimeout = setTimeout(upload, 25);
+//                        } else {
+//                            return _this._dialog.populate(ImageUploader.imagePath, ImageUploader.imageSize);
+//                        }
+//                    };
+//                })(this);
+//                return this._uploadingTimeout = setTimeout(upload, 25);
+            };
+
+            ImageUploader.prototype._onMount = function () {
+            };
+
+            ImageUploader.prototype._onRotateCCW = function () {
+                var clearBusy;
+                this._dialog.busy(true);
+                clearBusy = (function (_this) {
+                    return function () {
+                        return _this._dialog.busy(false);
+                    };
+                })(this);
+                return setTimeout(clearBusy, 1500);
+            };
+
+            ImageUploader.prototype._onRotateCW = function () {
+                var clearBusy;
+                this._dialog.busy(true);
+                clearBusy = (function (_this) {
+                    return function () {
+                        return _this._dialog.busy(false);
+                    };
+                })(this);
+                return setTimeout(clearBusy, 1500);
+            };
+
+            ImageUploader.prototype._onSave = function () {
+                var clearBusy;
+                this._dialog.busy(true);
+                clearBusy = (function (_this) {
+                    return function () {
+                        _this._dialog.busy(false);
+                        return _this._dialog.save(ImageUploader.imagePath, ImageUploader.imageSize, {
+                            alt: 'Example of bad variable names'
+                        });
+                    };
+                })(this);
+                return setTimeout(clearBusy, 1500);
+            };
+
+            ImageUploader.prototype._onUnmount = function () {
+            };
+
+            ImageUploader.createImageUploader = function (dialog) {
+                return new ImageUploader(dialog);
+            };
+
+            return ImageUploader;
+
+        })();
+
+        window.ImageUploader = ImageUploader;
+        window.addEventListener('load', function () {
+            var editor, req;
+            ContentTools.IMAGE_UPLOADER = ImageUploader.createImageUploader;
+            ContentTools.StylePalette.add([new ContentTools.Style('By-line', 'article__by-line', ['p']), new ContentTools.Style('Caption', 'article__caption', ['p']), new ContentTools.Style('Example', 'example', ['pre']), new ContentTools.Style('Example + Good', 'example--good', ['pre']), new ContentTools.Style('Example + Bad', 'example--bad', ['pre'])]);
             editor = ContentTools.EditorApp.get();
             editor.init('*[data-editable]', 'data-name');
             editor.bind('save', function (regions) {
@@ -47,9 +233,9 @@
                 };
                 xhr = new XMLHttpRequest();
                 xhr.addEventListener('readystatechange', onStateChange);
-                xhr.open('POST',window.location.pathname);
+                xhr.open('POST', window.location.pathname);
                 xhr.send(payload);
             });
-        })
+        });
     </script>
 {{/section}}

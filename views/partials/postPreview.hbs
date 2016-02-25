@@ -10,6 +10,7 @@
         </p>
     </header>
     <div class="post-description">
-        {{{preview this.content}}} <a href="/post/{{this.id}}">read more</a>
+        {{{preview this.content}}}{{#if this.content}}...{{/if}}
+        <p><a href="/post/{{this.id}}">read more</a></p>
     </div>
 </section>

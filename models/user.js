@@ -22,6 +22,7 @@ schema.methods.validPassword = function(password){
 
 schema.statics.getUser = function(id){
     //todo check dis
+    console.log('id',id);
     return this.findById(id).exec(function (err, user) {
         if (err) {
             return console.error(err);
