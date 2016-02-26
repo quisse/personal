@@ -147,10 +147,6 @@ router.post('/post/:id/img', isLoggedIn, function (req, res) {
                 res.json({url: 'https://'+bucket+'.s3.amazonaws.com/'+ filePath, size: [size.width, size.height]})
             });
         });
-
-        //part.on('error', function(err) {
-        //    // decide what to do
-        //});
     });
     form.parse(req);
 });

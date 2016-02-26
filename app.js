@@ -30,6 +30,7 @@ hbs.registerHelper('section', function (name, options) {
     return null;
 });
 hbs.registerHelper('preview', function (content) {
+    content = content.replace(/<img[^>]*>/g,"");
     var maxLength = 200;
     var trimmed = content.substr(0, maxLength);
     trimmed = trimmed.substr(0, Math.min(trimmed.length, trimmed.lastIndexOf(' ')));
