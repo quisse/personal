@@ -10,6 +10,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
 
+
 var index = require('./routes/index');
 var admin = require('./routes/admin');
 
@@ -28,10 +29,10 @@ hbs.registerHelper('section', function (name, options) {
     this._sections[name] = options.fn(this);
     return null;
 });
-hbs.registerHelper('preview', function(content){
+hbs.registerHelper('preview', function (content) {
     var maxLength = 200;
-    var trimmed = content.substr(0,maxLength);
-    trimmed = trimmed.substr(0,Math.min(trimmed.length, trimmed.lastIndexOf(' ')));
+    var trimmed = content.substr(0, maxLength);
+    trimmed = trimmed.substr(0, Math.min(trimmed.length, trimmed.lastIndexOf(' ')));
     console.log(trimmed);
     return trimmed;
 });
@@ -47,7 +48,11 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({secret:process.env.SECRET,resave:true, saveUninitialized:true}));
+app.use(session({
+    secret: process.env.SECRET,
+    resave: true,
+    saveUninitialized: true,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());

@@ -10,7 +10,7 @@
 </div>
 <a href="/admin">back</a>
 {{#section 'foot'}}
-    <script src="/javascripts/content-tools.min.js"></script>
+    <script src="/javascripts/content-tools.js"></script>
     <script>
         var ImageUploader;
 
@@ -91,8 +91,11 @@
 
             ImageUploader.prototype._onFileReady = function (file) {
                 var formData;
+                console.log('dialog',this);
+                var dialog = this._dialog;
                 xhrProgress = function (ev) {
-                    this._dialog.progress((ev.loaded / ev.total) * 100);
+                    console.log(ev);
+                    dialog.progress((ev.loaded / ev.total) * 100);
                 };
                 xhrComplete = function (ev) {
                     var response;
@@ -108,8 +111,9 @@
                         image={
                             size:response.size,
                             url:response.url,
-                        }
+                        };
                         console.log(image);
+                        dialog.populate(image.url, image.size);
                     } else {
                         new ContentTools.FlashUI('no');
                     }
@@ -125,24 +129,6 @@
                 console.log(ImageUploader);
                 xhr.open('POST', target, true);
                 xhr.send(formData);
-
-//                var upload;
-//                this._dialog.progress(0);
-//                this._dialog.state('uploading');
-//                upload = (function(_this) {
-//                    return function() {
-//                        var progress;
-//                        progress = _this._dialog.progress();
-//                        progress += 1;
-//                        if (progress <= 100) {
-//                            _this._dialog.progress(progress);
-//                            return _this._uploadingTimeout = setTimeout(upload, 25);
-//                        } else {
-//                            return _this._dialog.populate(ImageUploader.imagePath, ImageUploader.imageSize);
-//                        }
-//                    };
-//                })(this);
-//                return this._uploadingTimeout = setTimeout(upload, 25);
             };
 
             ImageUploader.prototype._onMount = function () {
@@ -176,8 +162,8 @@
                 clearBusy = (function (_this) {
                     return function () {
                         _this._dialog.busy(false);
-                        return _this._dialog.save(ImageUploader.imagePath, ImageUploader.imageSize, {
-                            alt: 'Example of bad variable names'
+                        return _this._dialog.save(image.url, image.size, {
+                            alt: ''
                         });
                     };
                 })(this);

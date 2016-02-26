@@ -24,7 +24,6 @@ var schema = new mongoose.Schema({
         required:true,
     },
     tags:[String],
-    images:[String],
     created_at: {
         type: Date,
         required: true,
