@@ -37,6 +37,9 @@ hbs.registerHelper('preview', function (content) {
     console.log(trimmed);
     return trimmed;
 });
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
 hbs.registerHelper('dateFormat', require('handlebars-dateformat'));
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
 

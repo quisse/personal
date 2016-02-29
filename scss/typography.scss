@@ -1,5 +1,4 @@
 
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -17,15 +16,16 @@ a:hover,
 a:focus {
   text-decoration: underline;
 }
-h1,h2, .social{
-    margin:.2em 0 !important;
+
+h1, h2, .social {
+  margin: .2em 0 !important;
 }
 
 h1 {
   font-weight: bold;
 }
 
-h2{
+h2 {
   font-weight: bold;
 }
 
@@ -148,10 +148,10 @@ h3 {
   color: #fff;
   background: #999;
   font-size: 80%;
-  &:hover{
+  &:hover {
     background: $quaternaryColor;
-    text-decoration:none;
-    cursor:default;
+    text-decoration: none;
+    cursor: default;
   }
 }
 
@@ -232,4 +232,13 @@ ul.social {
       }
     }
   }
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+body {
+//  height: 100% !important;
 }

@@ -15,15 +15,19 @@ var schema = new mongoose.Schema({
             return "";
         }
     },
-    deleted:{
-        type:Boolean,
-        default:false
+    visible: {
+        type: Boolean,
+        default: false,
     },
-    owner:{
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
-        required:true,
+        required: true,
     },
-    tags:[String],
+    tags: [String],
     created_at: {
         type: Date,
         required: true,
@@ -45,7 +49,7 @@ schema.pre('save', function (next) {
     next();
 });
 
-schema.statics.getPost = function(id){
+schema.statics.getPost = function (id) {
     //todo check dis
     return this.findById(id).exec(function (err, post) {
         if (err) {
@@ -55,7 +59,7 @@ schema.statics.getPost = function(id){
     });
 };
 
-schema.statics.getAllPosts  =function(){
+schema.statics.getAllPosts = function () {
     return this.find().where('deleted', false).exec(function (err, posts) {
         if (err) {
             return console.error(err);
@@ -65,21 +69,29 @@ schema.statics.getAllPosts  =function(){
 };
 
 schema.statics.getNotPinnedPosts = function () {
-    return this.find().where('pinned', false).where('deleted', false).exec(function (err, posts) {
-        if (err) {
-            return console.error(err);
-        }
-        return posts;
-    });
+    return this.find()
+        .where('pinned', false)
+        .where('deleted', false)
+        .where('visible', true)
+        .exec(function (err, posts) {
+            if (err) {
+                return console.error(err);
+            }
+            return posts;
+        });
 };
 
 schema.statics.getPinnedPosts = function () {
-    return this.find().where('pinned', true).where('deleted', false).exec(function (err, posts) {
-        if (err) {
-            return console.error(err);
-        }
-        return posts;
-    });
+    return this.find()
+        .where('pinned', true)
+        .where('deleted', false)
+        .where('visible', true)
+        .exec(function (err, posts) {
+            if (err) {
+                return console.error(err);
+            }
+            return posts;
+        });
 };
 
 var post = module.exports = mongoose.model('post', schema);

@@ -1,32 +1,51 @@
 {{#section 'head'}}
-    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.tagsinput.min.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.tagsinput.min.css"/>
 {{/section}}
-<form method="post" class="pure-form">
-    <fieldset>
-        {{{add_form}}}
-        <button type="submit">submit</button>
-    </fieldset>
-</form>
+<a href="#modal-one" class="btn btn-big">Modal!</a>
 <ul>
     {{#each posts}}
-        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created
-            at: {{dateFormat this.created_at "MMMM Do YYYY"}} updated
-            at: {{dateFormat this.updated_at "MMMM Do YYYY"}}
-            <button onclick="deletePost('{{this.id}}')">delete</button>
-            {{#each this.tags}}
-                <a class="post-category">{{this}}</a>
-            {{/each}}
+        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created: {{dateFormat this.created_at "MMMM Do YYYY"}} updated: {{dateFormat this.updated_at "MMMM Do YYYY"}}
+            <a href="#modal-one" class="btn btn-big" onclick="edit({{json this}})">Edit properties</a>
+            <a href="#modal-one" class="btn btn-big" onclick="deletePost('{{this.id}}')">Delete</a>
+            <div>
+                {{#each this.tags}}
+                    <a class="post-category">{{this}}</a>
+                {{/each}}
+            </div>
             <!--<input class="tags" value="{{#each this.tags}}{{this}},{{/each}}" />-->
         </li>
     {{/each}}
 </ul>
+
+<!-- Modal -->
+<div class="modal" id="modal-one" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h2>Modal in CSS?</h2>
+            <a href="#close" class="btn-close" aria-hidden="true" onclick="resetForm()">×</a> <!--CHANGED TO "#close"-->
+        </div>
+        <div class="modal-body">
+            <form action="/admin" method="post" id="id_form">
+                {{{ post_form}}}
+                <button type="submit" href="#close" onclick="resetForm()">add</button>
+            </form>
+        </div>
+        <!--<div class="modal-footer">-->
+            <!--<a href="#close" class="btn">Nice!</a>  &lt;!&ndash;CHANGED TO "#close"&ndash;&gt;-->
+        <!--</div>-->
+    </div>
+</div>
+</div>
+<!-- /Modal -->
+
+
 {{#section 'foot'}}
     <script src="/javascripts/jquery.min.js"></script>
     <script src="/javascripts/jquery.tagsinput.js"></script>
     <script type="text/javascript">
         $('#id_tags').tagsInput();
         $('.tags').tagsInput();
-        function deletePost(id){
+        function deletePost(id) {
             function onStateChange(ev) {
                 // Check if the request is finished
                 if (ev.target.readyState == 4) {
@@ -42,8 +61,24 @@
             };
             xhr = new XMLHttpRequest();
             xhr.addEventListener('readystatechange', onStateChange);
-            xhr.open('delete', '/admin/post/'+id);
+            xhr.open('delete', '/admin/post/' + id);
             xhr.send();
+        }
+
+        function edit(post){
+            $('#id_title').val(post.title);
+            $('#id_tags').importTags(post.tags.join());
+            $('#id_pinned').prop('checked',post.pinned);
+            $('#id_visible').prop('checked',post.visible);
+            $('#id_form').attr('action', '/admin/post/'+post._id);
+        }
+
+        function resetForm(){
+            $('#id_title').val('');
+            $('#id_tags').importTags('');
+            $('#id_pinned').prop('checked',false);
+            $('#id_visible').prop('checked',false);
+            $('#id_form').attr('action', '/admin/post/');
         }
     </script>
 {{/section}}

@@ -22,10 +22,11 @@ var s3Client = new AWS.S3({
 });
 console.log(process.env.S3_KEY, process.env.S3_SECRET);
 
-add_form = forms.create({
+post_form = forms.create({
     title: fields.string({required: true}),
     tags: fields.string(),
-    pinned: fields.boolean()
+    pinned: fields.boolean(),
+    visible:fields.boolean(),
 });
 
 login_form = forms.create({
@@ -36,14 +37,14 @@ login_form = forms.create({
 /* GET routes page. */
 router.get('/', isLoggedIn, function (req, res, next) {
     Post.getAllPosts().then(function (posts) {
-        res.render('admin', {user: req.user, posts: posts, add_form: add_form.toHTML()});
+        res.render('admin', {user: req.user, posts: posts, post_form: post_form.toHTML()});
     });
 });
 
 router.post('/', isLoggedIn, function (req, res) {
     User.getUser(req.user._id).then(function (user) {
         if (user.admin == true) {
-            add_form.handle(req, {
+            post_form.handle(req, {
                 success: function (form) {
                     var data = form.data;
                     console.log('validated');
@@ -75,7 +76,6 @@ router.post('/', isLoggedIn, function (req, res) {
 
 router.get('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
-        console.log(post);
         res.render('edit', {user: req.user, content: post.content})
     });
 });
@@ -84,17 +84,65 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
-                var form = new multiparty.Form();
-                form.parse(req, function (err, fields, files) {
-                    if (fields.content[0]) {
-                        post.content = fields.content[0];
-                        post.save(function (err) {
-                            if (err) return handleError(err);
-                            // saved!
+                if(req.body){
+                    post_form.handle(req,{
+                        success:function(form){
+                            console.log(form.data);
+                            data = form.data;
+                            post.title = data.title;
+                            var tags = data.tags.split(',');
+                            console.log(tags);
+                            data.tags = [];
+                            tags.forEach(function (tag) {
+                                data.tags.push(tag);
+                            });
+                            post.tags=data.tags;
+                            post.pinned=data.pinned;
+                            post.visible = data.visible;
+                            post.save(function (err) {
+                                if (err) return handleError(err);
+                                // saved!
+                                res.redirect('/admin/');
+                            });
+                        },
+                        error: function (form) {
+                            res.redirect('/admin');
+                        },
+                        empty: function (form) {
+                            res.redirect('/admin');
+                        }
+                    })
+                } else if(req.get('Content-Type') == 'multipart/formdata'){
+                    var form = new multiparty.Form();
+                    form.parse(req, function (err, fields, files) {
+                        console.log(fields);
+                        if (fields.content[0]) {
+                            post.content = fields.content[0];
+                            post.save(function (err) {
+                                if (err) return handleError(err);
+                                // saved!
+                                res.sendStatus(200);
+                            });
+                        } else if(fields){
+
+                        } else {
                             res.sendStatus(200);
-                        });
-                    } else {
-                        res.sendStatus(200);
+                        }
+                    });
+                }
+                console.log(req.body);
+            }
+        });
+    });
+});
+
+router.put('/post/:id', isLoggedIn,function(req,res){
+    Post.getPost(req.params.id).then(function (post) {
+        User.getUser(req.user._id).then(function (user) {
+            if (post.owner.toString() == user._id.toString()) {
+                post_form.handle(req, {
+                    success: function (form) {
+                        console.log(form);
                     }
                 });
             }
@@ -103,52 +151,60 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
 });
 
 router.post('/post/:id/img', isLoggedIn, function (req, res) {
-    console.log('post');
-    var form = new multiparty.Form();
-    form.on('file', function (name, file) {
-        var filePath = req.params.id + '/' + file.originalFilename;
-        var exist;
-        var size;
-        async.doWhilst(function (callback) {
-            s3Client.headObject({
-                Bucket: bucket,
-                Key: filePath,
-            }, function (err, res) {
-                if (err) {
-                    if(err.statusCode == 404){
-                        exist = false;
-                    }else {
-                        console.log(err);
-                        return
-                    }
-                }
-                if (res) {
-                    exist = true;
-                    var file = path.basename(filePath, path.extname(filePath));
-                    filePath = req.params.id + '/' + file + Math.floor((Math.random() * 1000) + 1) + path.extname(filePath);
-                    console.log(filePath);
-                }
-                callback();
-            });
-        }, function () {
-            return exist;
-        }, function (err) {
-            s3Client.putObject({
-                Bucket: bucket,
-                Key: filePath,
-                ACL: 'public-read',
-                Body: fs.createReadStream(file.path),
-                //ContentLength: part.byteCount
-            }, function (err, data) {
-                var size = sizeOf(file.path);
-                console.log(size);
-                fs.unlink(file.path);
-                if (err) throw err;
-                res.json({url: 'https://'+bucket+'.s3.amazonaws.com/'+ filePath, size: [size.width, size.height]})
-            });
+    Post.getPost(req.params.id).then(function (post) {
+        User.getUser(req.user._id).then(function (user) {
+            if (post.owner.toString() == user._id.toString()) {
+                var form = new multiparty.Form();
+                form.on('file', function (name, file) {
+                    var filePath = req.params.id + '/' + file.originalFilename;
+                    var exist;
+                    var size;
+                    async.doWhilst(function (callback) {
+                        s3Client.headObject({
+                            Bucket: bucket,
+                            Key: filePath,
+                        }, function (err, res) {
+                            if (err) {
+                                if (err.statusCode == 404) {
+                                    exist = false;
+                                } else {
+                                    console.log(err);
+                                    return
+                                }
+                            }
+                            if (res) {
+                                exist = true;
+                                var file = path.basename(filePath, path.extname(filePath));
+                                filePath = req.params.id + '/' + file + Math.floor((Math.random() * 1000) + 1) + path.extname(filePath);
+                                console.log(filePath);
+                            }
+                            callback();
+                        });
+                    }, function () {
+                        return exist;
+                    }, function (err) {
+                        s3Client.putObject({
+                            Bucket: bucket,
+                            Key: filePath,
+                            ACL: 'public-read',
+                            Body: fs.createReadStream(file.path),
+                            //ContentLength: part.byteCount
+                        }, function (err, data) {
+                            var size = sizeOf(file.path);
+                            console.log(size);
+                            fs.unlink(file.path);
+                            if (err) throw err;
+                            res.json({
+                                url: 'https://' + bucket + '.s3.amazonaws.com/' + filePath,
+                                size: [size.width, size.height]
+                            })
+                        });
+                    });
+                });
+                form.parse(req);
+            }
         });
     });
-    form.parse(req);
 });
 
 router.delete('/post/:id', isLoggedIn, function (req, res) {
