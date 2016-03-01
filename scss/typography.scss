@@ -7,7 +7,11 @@
 
 a {
   text-decoration: none;
-  .link {
+  color: $secondaryColor;
+  a {
+    text-decoration: none;
+  }
+  &:link, &:visited {
     color: $secondaryColor;
   }
 }
@@ -31,6 +35,10 @@ h2 {
 
 h3 {
   font-weight: 100;
+}
+
+::selection{
+  background: $quaternaryColor;
 }
 
 /* LAYOUT CSS */
@@ -145,13 +153,14 @@ h3 {
 .post-category {
   margin: 0 0.1em;
   padding: 0.3em 1em;
-  color: #fff;
+  color: #fff !important;
   background: #999;
   font-size: 80%;
+  text-decoration: none;
   &:hover {
     background: $quaternaryColor;
     text-decoration: none;
-    cursor: default;
+    color: $primaryColor !important;
   }
 }
 
@@ -239,6 +248,18 @@ img {
   margin: auto;
 }
 
-body {
-//  height: 100% !important;
+.alert {
+    position: relative;
+    margin-bottom: 1em;
+    padding: 1em;
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.alert-error {
+  background-color: $quaternaryColor;
+  color: #000;
+  a:hover{
+    color:white;
+  }
 }

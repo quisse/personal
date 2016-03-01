@@ -5,7 +5,7 @@
         </h2>
         <p class="post-meta">
             {{#each this.tags}}
-                <a class="post-category">{{this}}</a>
+                <a class="post-category" href="?tag='{{this}}'">{{this}}</a>
             {{/each}}
         </p>
     </header>

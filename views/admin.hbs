@@ -1,10 +1,18 @@
 {{#section 'head'}}
     <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.tagsinput.min.css"/>
 {{/section}}
-<a href="#modal-one" class="btn btn-big">Modal!</a>
+{{#unless user.admin}}
+    <div class="alert alert-error">
+        <p>You don't have the rights to edit/add posts. But you do have the rights to explore this CMS for my blog and
+            mess with it. So have fun, check it out on <a href="https://github.com/quisse/personal">Github</a> and give
+            feedback/pull request if necessary. Thanks!</p>
+    </div>
+{{/unless}}
+<a href="#modal-one" class="btn btn-big">Add new post</a>
 <ul>
     {{#each posts}}
-        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created: {{dateFormat this.created_at "MMMM Do YYYY"}} updated: {{dateFormat this.updated_at "MMMM Do YYYY"}}
+        <li><a href="/admin/post/{{this.id}}">{{this.title}}</a> created: {{dateFormat this.created_at "MMMM Do YYYY"}}
+            updated: {{dateFormat this.updated_at "MMMM Do YYYY"}}
             <a href="#modal-one" class="btn btn-big" onclick="edit({{json this}})">Edit properties</a>
             <a href="#modal-one" class="btn btn-big" onclick="deletePost('{{this.id}}')">Delete</a>
             <div>
@@ -31,7 +39,7 @@
             </form>
         </div>
         <!--<div class="modal-footer">-->
-            <!--<a href="#close" class="btn">Nice!</a>  &lt;!&ndash;CHANGED TO "#close"&ndash;&gt;-->
+        <!--<a href="#close" class="btn">Nice!</a>  &lt;!&ndash;CHANGED TO "#close"&ndash;&gt;-->
         <!--</div>-->
     </div>
 </div>
@@ -65,19 +73,19 @@
             xhr.send();
         }
 
-        function edit(post){
+        function edit(post) {
             $('#id_title').val(post.title);
             $('#id_tags').importTags(post.tags.join());
-            $('#id_pinned').prop('checked',post.pinned);
-            $('#id_visible').prop('checked',post.visible);
-            $('#id_form').attr('action', '/admin/post/'+post._id);
+            $('#id_pinned').prop('checked', post.pinned);
+            $('#id_visible').prop('checked', post.visible);
+            $('#id_form').attr('action', '/admin/post/' + post._id);
         }
 
-        function resetForm(){
+        function resetForm() {
             $('#id_title').val('');
             $('#id_tags').importTags('');
-            $('#id_pinned').prop('checked',false);
-            $('#id_visible').prop('checked',false);
+            $('#id_pinned').prop('checked', false);
+            $('#id_visible').prop('checked', false);
             $('#id_form').attr('action', '/admin/post/');
         }
     </script>
