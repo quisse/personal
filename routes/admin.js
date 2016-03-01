@@ -82,13 +82,9 @@ router.get('/post/:id', isLoggedIn, function (req, res) {
 
 router.post('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
-        console.log(post);
         User.getUser(req.user._id).then(function (user) {
-            console.log(user);
             if (post.owner.toString() == user._id.toString()) {
-                console.log(req.get('Content-Type').indexOf('multipart/form-data;')> -1);
-                console.log(req.body);
-                if(req.body.count > 0){
+                if(!isEmpty(req.body)){
                     post_form.handle(req,{
                         success:function(form){
                             console.log(form.data);
@@ -109,10 +105,12 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
                                 res.redirect('/admin/');
                             });
                         },
-                        error: function (form) {
+                        error: function (error) {
+                            console.log(error);
                             res.redirect('/admin');
                         },
                         empty: function (form) {
+                            console.log('empty');
                             res.redirect('/admin');
                         }
                     })
@@ -261,6 +259,9 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/admin/login');
+}
+function isEmpty(obj) {
+    return !Object.keys(obj).length;
 }
 
 module.exports = router;

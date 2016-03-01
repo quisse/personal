@@ -3,11 +3,13 @@
         <h2 class="post-title">
             {{this.title}}
         </h2>
+        {{#if this.tags}}
         <p class="post-meta">
             {{#each this.tags}}
                 <a class="post-category" href="?tag='{{this}}'">{{this}}</a>
             {{/each}}
-        </p>
+        {{/if}}
+    </p>
     </header>
     <div class="post-description">
         {{{preview this.content}}}{{#if this.content}}...{{/if}}
