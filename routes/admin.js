@@ -82,9 +82,13 @@ router.get('/post/:id', isLoggedIn, function (req, res) {
 
 router.post('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
+        console.log(post);
         User.getUser(req.user._id).then(function (user) {
+            console.log(user);
             if (post.owner.toString() == user._id.toString()) {
-                if(req.body){
+                console.log(req.get('Content-Type').indexOf('multipart/form-data;')> -1);
+                console.log(req.body);
+                if(req.body.count > 0){
                     post_form.handle(req,{
                         success:function(form){
                             console.log(form.data);
@@ -112,25 +116,26 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
                             res.redirect('/admin');
                         }
                     })
-                } else if(req.get('Content-Type') == 'multipart/formdata'){
+                } else if(req.get('Content-Type').indexOf('multipart/form-data;')> -1){
+                    console.log('test');
+                    console.log(req.get('Content-Type'));
                     var form = new multiparty.Form();
                     form.parse(req, function (err, fields, files) {
-                        console.log(fields);
-                        if (fields.content[0]) {
-                            post.content = fields.content[0];
-                            post.save(function (err) {
-                                if (err) return handleError(err);
-                                // saved!
-                                res.sendStatus(200);
-                            });
-                        } else if(fields){
-
+                        console.log('fields',fields);
+                        if(fields){
+                            if (fields.content[0]) {
+                                post.content = fields.content[0];
+                                post.save(function (err) {
+                                    if (err) return handleError(err);
+                                    // saved!
+                                    res.sendStatus(200);
+                                });
+                            }
                         } else {
                             res.sendStatus(200);
                         }
                     });
                 }
-                console.log(req.body);
             }
         });
     });

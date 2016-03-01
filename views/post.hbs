@@ -1,7 +1,10 @@
-<a href="/">back</a>
-<h1>{{post.title}}</h1>
+<h1 class="title">{{post.title}}</h1>
 {{#each this.tags}}
     <a class="post-category" href="?tag='{{this}}'">{{this}}</a>
 {{/each}}
-{{{post.content}}}
-<a href="/">back</a>
+<div class="post-content">
+    {{{post.content}}}
+</div>
+<div class="button-bar">
+    <a href="/" class="button">Back to overview</a>
+</div>

@@ -1,14 +1,15 @@
 {{#section 'head'}}
     <link rel="stylesheet" type="text/css" href="/stylesheets/content-tools.min.css">
 {{/section}}
-<a href="/admin">back</a>
-<div data-editable data-name="content">
+<div data-editable data-name="content" class="post-content">
     {{#unless content }}
         <p>this is the intro paragraph</p>
     {{/unless}}
     {{{content}}}
 </div>
-<a href="/admin">back</a>
+<div class="button-bar">
+    <a href="/admin" class="button">Back to overview</a>
+</div>
 {{#section 'foot'}}
     <script src="/javascripts/content-tools.js"></script>
     <script>
@@ -185,7 +186,8 @@
         window.addEventListener('load', function () {
             var editor, req;
             ContentTools.IMAGE_UPLOADER = ImageUploader.createImageUploader;
-            ContentTools.StylePalette.add([new ContentTools.Style('By-line', 'article__by-line', ['p']), new ContentTools.Style('Caption', 'article__caption', ['p']), new ContentTools.Style('Example', 'example', ['pre']), new ContentTools.Style('Example + Good', 'example--good', ['pre']), new ContentTools.Style('Example + Bad', 'example--bad', ['pre'])]);
+//            ContentTools.StylePalette.add([new ContentTools.Style('By-line', 'article__by-line', ['p']), new ContentTools.Style('Caption', 'article__caption', ['p']), new ContentTools.Style('Example', 'example', ['pre']), new ContentTools.Style('Example + Good', 'example--good', ['pre']), new ContentTools.Style('Example + Bad', 'example--bad', ['pre'])]);
+            ContentTools.StylePalette.add([new ContentTools.Style('Round image','img-round','img'), new ContentTools.Style('bordered image', 'img-bordered','img')]);
             editor = ContentTools.EditorApp.get();
             editor.init('*[data-editable]', 'data-name');
             editor.bind('save', function (regions) {

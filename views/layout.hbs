@@ -51,8 +51,13 @@
             <div class="footer">
                 <div class="pure-menu pure-menu-horizontal">
                     <ul>
-                        <li class="pure-menu-item"><a href="/admin/login" class="pure-menu-link">Login</a></li>
-                        <li class="pure-menu-item"><a href="/admin/signup" class="pure-menu-link">Signup</a></li>
+                        {{#unless user }}
+                            <li class="pure-menu-item"><a href="/admin/login" class="pure-menu-link">Login</a></li>
+                            <li class="pure-menu-item"><a href="/admin/signup" class="pure-menu-link">Signup</a></li>
+                        {{/unless}}
+                        {{#if user}}
+                            <li class="pure-menu-item"><a href="/admin/logout">Logout</a></li>
+                        {{/if}}
                         <li class="pure-menu-item"><a href="/" class="pure-menu-link">Blog</a>
                         </li>
                         <li class="pure-menu-item"><a href="https://github.com/quisse/personal" class="pure-menu-link" target="_blank">Find this project on Github!</a></li>
