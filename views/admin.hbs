@@ -13,7 +13,7 @@
     </div>
 {{#each posts}}
     <article>
-        <h2><a href="/admin/post/{{this.id}}">{{this.title}}</a></h2> <!-- TODO: show when visible and or pinned-->
+        <h2><!--<a href="/admin/post/{{this.id}}">-->{{this.title}}<!--</a>--></h2> <!-- TODO: show when visible and or pinned-->
         <p>Created: {{dateFormat this.created_at "MMMM Do YYYY"}}
             Updated: {{dateFormat this.updated_at "MMMM Do YYYY"}}</p>
         <div class="pure-g">

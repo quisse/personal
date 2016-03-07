@@ -26,7 +26,7 @@ post_form = forms.create({
     title: fields.string({required: true}),
     tags: fields.string(),
     pinned: fields.boolean(),
-    visible:fields.boolean(),
+    visible: fields.boolean(),
 });
 
 login_form = forms.create({
@@ -76,7 +76,7 @@ router.post('/', isLoggedIn, function (req, res) {
 
 router.get('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
-        res.render('edit', {user: req.user, content: post.content})
+        res.render('edit', {user: req.user, content: post.content, title: post.title})
     });
 });
 
@@ -84,9 +84,9 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
-                if(!isEmpty(req.body)){
-                    post_form.handle(req,{
-                        success:function(form){
+                if (!isEmpty(req.body)) {
+                    post_form.handle(req, {
+                        success: function (form) {
                             console.log(form.data);
                             data = form.data;
                             post.title = data.title;
@@ -96,11 +96,11 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
                             tags.forEach(function (tag) {
                                 data.tags.push(tag);
                             });
-                            post.tags=data.tags;
-                            post.pinned=data.pinned;
+                            post.tags = data.tags;
+                            post.pinned = data.pinned;
                             post.visible = data.visible;
                             post.save(function (err) {
-                                if (err) return handleError(err);
+                                if (err) console.log(err);
                                 // saved!
                                 res.redirect('/admin/');
                             });
@@ -114,13 +114,13 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
                             res.redirect('/admin');
                         }
                     })
-                } else if(req.get('Content-Type').indexOf('multipart/form-data;')> -1){
+                } else if (req.get('Content-Type').indexOf('multipart/form-data;') > -1) {
                     console.log('test');
                     console.log(req.get('Content-Type'));
                     var form = new multiparty.Form();
                     form.parse(req, function (err, fields, files) {
-                        console.log('fields',fields);
-                        if(fields){
+                        console.log('fields', fields);
+                        if (fields) {
                             if (fields.content[0]) {
                                 post.content = fields.content[0];
                                 post.save(function (err) {
@@ -139,7 +139,7 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
     });
 });
 
-router.put('/post/:id', isLoggedIn,function(req,res){
+router.put('/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
