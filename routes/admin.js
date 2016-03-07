@@ -121,13 +121,15 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
                     form.parse(req, function (err, fields, files) {
                         console.log('fields', fields);
                         if (fields) {
-                            if (fields.content[0]) {
-                                post.content = fields.content[0];
-                                post.save(function (err) {
-                                    if (err) return handleError(err);
-                                    // saved!
-                                    res.sendStatus(200);
-                                });
+                            if(fields.content){
+                                if (fields.content[0]) {
+                                    post.content = fields.content[0];
+                                    post.save(function (err) {
+                                        if (err) return handleError(err);
+                                        // saved!
+                                        res.sendStatus(200);
+                                    });
+                                }
                             }
                         } else {
                             res.sendStatus(200);

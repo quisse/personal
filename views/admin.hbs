@@ -42,7 +42,7 @@
         <div class="modal-body">
             <form action="/admin" method="post" id="id_form">
                 {{{ post_form}}}
-                <button type="submit" href="#close" id="btn_submit">add</button>
+                <button type="submit" href="#close" id="btn_submit">Save</button>
             </form>
         </div>
         <!--<div class="modal-footer">-->
@@ -97,5 +97,6 @@
             $('#id_form').attr('action', '/admin/');
             $('#btn_submit').attr('onclick', '');
         }
+        resetForm();
     </script>
 {{/section}}
