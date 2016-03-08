@@ -1,6 +1,8 @@
 body {
-  width:100%;
+  width: 100%;
+  font-size: 100%;
 }
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -27,11 +29,18 @@ h1, h2, .social {
   margin: .2em 0 !important;
 }
 
-h1:not(.content-subhead) {
+.post-description h1 {
+  font-size:2rem !important;
+}
+
+h1:not(.title):not(.content-subhead) {
   font-weight: bold;
   font-size: 3rem !important;
   line-height: 32px;
-  &.header{
+  .post-description &{
+    font-size:1.8rem !important;
+  }
+  &.header {
     font-size: 2em !important;
     margin: .67em 0;
   }
@@ -40,7 +49,7 @@ h1:not(.content-subhead) {
 h2 {
   font-weight: bold;
   &:not(.brand-tagline) {
-    font-size: 2.4rem;
+    font-size: 2rem;
     line-height: 32px;
   }
 }
@@ -50,9 +59,11 @@ h3 {
   font-size: 2rem;
   line-height: 24px;
 }
+
 h4 {
   font-size: 1.8rem;
-  line-height: 24px;}
+  line-height: 24px;
+}
 
 ::selection {
   background: $quaternaryColor;
@@ -315,12 +326,13 @@ article {
   font-size: 4.8rem !important;
   line-height: 56px;
 }
-.button-bar{
-  text-align:center;
-  margin-top:1em;
+
+.button-bar {
+  text-align: center;
+  margin-top: 1em;
 }
-.icon
-{
+
+.icon {
   vertical-align: bottom;
   display: inline-block;
   position: absolute;
@@ -331,23 +343,24 @@ article {
     position: relative;
   }
 }
-.img-round{
+
+.img-round {
   border-radius: 80%;
 }
 
-.img-borderd{
+.img-borderd {
   background-color: #FFFFFF;
   border: 1px solid rgba(0, 0, 0, 0.2);
   padding: 5px;
 }
 
-.small-img{
-  width:10em;
+.small-img {
+  width: 10em;
   height: auto;
 }
 
 .post-content {
-  p{
-    margin-bottom:.5em;
+  p {
+    margin-bottom: .5em;
   }
 }
