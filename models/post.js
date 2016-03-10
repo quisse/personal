@@ -60,7 +60,7 @@ schema.statics.getPost = function (id) {
 };
 
 schema.statics.getAllPosts = function () {
-    return this.find().where('deleted', false).exec(function (err, posts) {
+    return this.find().where('deleted', false).sort({'created_at':-1}).exec(function (err, posts) {
         if (err) {
             return console.error(err);
         }
@@ -73,6 +73,7 @@ schema.statics.getNotPinnedPosts = function () {
         .where('pinned', false)
         .where('deleted', false)
         .where('visible', true)
+        .sort({'created_at':-1})
         .exec(function (err, posts) {
             if (err) {
                 return console.error(err);
@@ -86,6 +87,7 @@ schema.statics.getPinnedPosts = function () {
         .where('pinned', true)
         .where('deleted', false)
         .where('visible', true)
+        .sort({'created_at':-1})
         .exec(function (err, posts) {
             if (err) {
                 return console.error(err);
