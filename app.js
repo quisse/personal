@@ -9,6 +9,7 @@ var hbs = require('hbs');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
+require('dotenv').config();
 
 
 var index = require('./routes/index');
