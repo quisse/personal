@@ -1,12 +1,14 @@
 language: node_js
 deploy:
   provider: script
-  script: bash .travis/deploy.sh
+  script: bash -x .travis/deploy.sh
+  skip_cleanup: true
   on:
     branch: master
+script: npm -v
 addons:
-    ssh_known_hosts:
-    - 94.130.180.129
+  ssh_known_hosts:
+  - 94.130.180.129
 before_install:
 - openssl aes-256-cbc -K $encrypted_96718c21863f_key -iv $encrypted_96718c21863f_iv
-  -in .travis/id_rsa.enc -out .travis/id_rsa -d
+  -in .travis/id_rsa.enc -out .travis/id_rsa -d && ls -al .travis
