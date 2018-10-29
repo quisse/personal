@@ -9,7 +9,7 @@ var hbs = require('hbs');
 var passport = require('passport');
 var flash = require('connect-flash');
 var session = require('express-session');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 
 var index = require('./routes/index');
