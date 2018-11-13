@@ -17,7 +17,10 @@ var admin = require('./routes/admin');
 
 var app = express();
 
-mongoose.connect(process.env.MONGO);
+mongoose.connect(process.env.MONGO, {
+    useMongoClient: true,
+    /* other options */
+});
 
 require('./config/passport')(passport);
 
