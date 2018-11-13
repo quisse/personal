@@ -1,12 +1,17 @@
-var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    sourcemaps = require('gulp-sourcemaps'),
-    autoprefixer = require('gulp-autoprefixer'),
-    rename = require('gulp-rename'),
-    server = require('gulp-express'),
-    env = require('gulp-env');
+// var gulp = require('gulp'),
+//     sass = require('gulp-sass'),
+//     sourcemaps = require('gulp-sourcemaps'),
+//     autoprefixer = require('gulp-autoprefixer'),
+//     rename = require('gulp-rename'),
+//     server = require('gulp-express');
 
-var sassConfig = {
+const plugins = require('gulp-load-plugins')({
+        pattern: ['*', '!gulp', '!gulp-load-plugins', '!gulp-express'],
+        rename : {
+            'browser-sync'    : 'browserSync',
+        }
+    }),
+    sassConfig = {
         input: './scss/style.scss',
         target: './scss/**/*.scss',
         output: './public/stylesheets',
@@ -28,13 +33,13 @@ var sassConfig = {
 gulp.task('sass', function () {
     return gulp
         .src(sassConfig.input)
-        .pipe(sourcemaps.init())
-        .pipe(sass(sassConfig.sassOptions).on('error', sass.logError))
+        .pipe(plugins.sourcemaps.init())
+        .pipe(plugins.sass(sassConfig.sassOptions).on('error', sass.logError))
         .pipe(sourcemaps.write())
         .pipe(autoprefixer(sassConfig.autoprefixerOptions))
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(sassConfig.output))
-        //.pipe(livereload())
+        // .pipe(livereload())
         //.pipe(sassdoc())
         // Release the pressure back and trigger flowing mode (drain)
         // See: http://sassdoc.com/gulp/#drain-event
@@ -48,9 +53,6 @@ gulp.task('sass', function () {
 //});
 
 gulp.task('server', function () {
-    env({
-        file:'.env.json'
-    });
 
     server.run([expressConfig.source],[expressConfig.options]);
 
