@@ -61,4 +61,4 @@ gulp.task('server', function () {
         server.notify(event)
     });
 });
-gulp.task('default', ['sass', 'server']);
+gulp.task('default', gulp.series('sass', 'server'));
