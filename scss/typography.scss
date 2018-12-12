@@ -69,6 +69,10 @@ h4 {
   background: $quaternaryColor;
 }
 
+p {
+  line-height: 1.2;
+}
+
 /* LAYOUT CSS */
 .pure-img-responsive {
   max-width: 100%;
@@ -152,6 +156,9 @@ h4 {
 
 .post {
   padding-bottom: 2em;
+  .read-more {
+    margin-top:5px;
+  }
 }
 
 .post-title {
@@ -174,7 +181,8 @@ h4 {
 .post-meta {
   color: #999;
   font-size: 90%;
-  margin: 0;
+  margin: 0 0 5px 0;
+
 }
 
 .post-category {
@@ -330,7 +338,7 @@ article {
 
 .button-bar {
   text-align: center;
-  margin-top: 1em;
+  margin: 2em 0;
 }
 
 .icon {
@@ -361,17 +369,24 @@ article {
 }
 
 .post-content {
-  p {
-    margin-bottom: .5em;
+  > * {
+    margin-bottom: 1em;
   }
 }
 #fixedbutton {
   position: fixed;
   top: 0px;
   right: 10px;
+  background-color: white;
 }
 
 iframe{
   display:block;
   margin:auto;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
