@@ -5,8 +5,9 @@
 //     rename = require('gulp-rename'),
 //     server = require('gulp-express');
 
-const plugins = require('gulp-load-plugins')({
-        pattern: ['*', '!gulp', '!gulp-load-plugins', '!gulp-express'],
+const gulp = require('gulp'),
+    plugins = require('gulp-load-plugins')({
+        pattern: ['gulp-*', /*'!gulp', */'!gulp-load-plugins'],
         rename : {
             'browser-sync'    : 'browserSync',
         }
@@ -34,10 +35,10 @@ gulp.task('sass', function () {
     return gulp
         .src(sassConfig.input)
         .pipe(plugins.sourcemaps.init())
-        .pipe(plugins.sass(sassConfig.sassOptions).on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(autoprefixer(sassConfig.autoprefixerOptions))
-        .pipe(rename({suffix: '.min'}))
+        .pipe(plugins.sass(sassConfig.sassOptions).on('error', plugins.sass.logError))
+        .pipe(plugins.sourcemaps.write())
+        .pipe(plugins.autoprefixer(sassConfig.autoprefixerOptions))
+        .pipe(plugins.rename({suffix: '.min'}))
         .pipe(gulp.dest(sassConfig.output))
         // .pipe(livereload())
         //.pipe(sassdoc())
@@ -54,13 +55,13 @@ gulp.task('sass', function () {
 
 gulp.task('server', function () {
 
-    server.run([expressConfig.source],[expressConfig.options]);
+    plugins.express.run([expressConfig.source],[expressConfig.options]);
 
-    gulp.watch([sassConfig.target], ['sass']);
-    gulp.watch([sassConfig.output + '/**/*.css'], server.notify);
+    gulp.watch([sassConfig.target], gulp.series('sass'));
+    gulp.watch([sassConfig.output + '/**/*.css'], plugins.express.notify);
     gulp.watch(expressConfig.js, function (event) {
-        server.run([expressConfig.source]);
-        server.notify(event)
+        plugins.express.run([expressConfig.source]);
+        plugins.express.notify(event)
     });
 });
-gulp.task('default', ['sass', 'server']);
+gulp.task('default', gulp.series('sass', 'server'));
