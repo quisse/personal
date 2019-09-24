@@ -21,7 +21,7 @@
     "forms": "^1.1.4",
     "fs": "0.0.2",
     "handlebars-dateformat": "^1.0.1",
-    "hbs": "~3.1.0",
+    "hbs": "^4.0.4",
     "image-size": "^0.4.0",
     "less-middleware": "1.0.x",
     "mongoose": "^4.4.3",
