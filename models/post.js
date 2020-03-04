@@ -51,21 +51,11 @@ schema.pre('save', function (next) {
 
 schema.statics.getPost = function (id) {
     //todo check dis
-    return this.findById(id).exec(function (err, post) {
-        if (err) {
-            return console.error(err);
-        }
-        return post;
-    });
+    return this.findById(id);
 };
 
 schema.statics.getAllPosts = function () {
-    return this.find().where('deleted', false).sort({'created_at':-1}).exec(function (err, posts) {
-        if (err) {
-            return console.error(err);
-        }
-        return posts;
-    });
+    return this.find().where('deleted', false).sort({'created_at':-1});
 };
 
 schema.statics.getNotPinnedPosts = function () {
@@ -73,13 +63,7 @@ schema.statics.getNotPinnedPosts = function () {
         .where('pinned', false)
         .where('deleted', false)
         .where('visible', true)
-        .sort({'created_at':-1})
-        .exec(function (err, posts) {
-            if (err) {
-                return console.error(err);
-            }
-            return posts;
-        });
+        .sort({'created_at':-1});
 };
 
 schema.statics.getPinnedPosts = function () {
@@ -87,13 +71,7 @@ schema.statics.getPinnedPosts = function () {
         .where('pinned', true)
         .where('deleted', false)
         .where('visible', true)
-        .sort({'created_at':-1})
-        .exec(function (err, posts) {
-            if (err) {
-                return console.error(err);
-            }
-            return posts;
-        });
+        .sort({'created_at':-1});
 };
 
 var post = module.exports = mongoose.model('post', schema);
