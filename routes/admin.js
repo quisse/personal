@@ -35,13 +35,13 @@ login_form = forms.create({
 });
 
 /* GET routes page. */
-router.get('/', isLoggedIn, function (req, res, next) {
+router.get('/blog/blog/', isLoggedIn, function (req, res, next) {
     Post.getAllPosts().then(function (posts) {
         res.render('admin', {user: req.user, posts: posts, post_form: post_form.toHTML()});
     });
 });
 
-router.post('/', isLoggedIn, function (req, res) {
+router.post('/blog/blog/', isLoggedIn, function (req, res) {
     User.getUser(req.user._id).then(function (user) {
         if (user.admin == true) {
             post_form.handle(req, {
@@ -74,13 +74,13 @@ router.post('/', isLoggedIn, function (req, res) {
     })
 });
 
-router.get('/post/:id', isLoggedIn, function (req, res) {
+router.get('/blog/blog/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         res.render('edit', {user: req.user, content: post.content, title: post.title})
     });
 });
 
-router.post('/post/:id', isLoggedIn, function (req, res) {
+router.post('/blog/blog/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
@@ -141,7 +141,7 @@ router.post('/post/:id', isLoggedIn, function (req, res) {
     });
 });
 
-router.put('/post/:id', isLoggedIn, function (req, res) {
+router.put('/blog/blog/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
@@ -155,7 +155,7 @@ router.put('/post/:id', isLoggedIn, function (req, res) {
     });
 });
 
-router.post('/post/:id/img', isLoggedIn, function (req, res) {
+router.post('/blog/blog/post/:id/img', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
@@ -212,7 +212,7 @@ router.post('/post/:id/img', isLoggedIn, function (req, res) {
     });
 });
 
-router.delete('/post/:id', isLoggedIn, function (req, res) {
+router.delete('/blog/blog/post/:id', isLoggedIn, function (req, res) {
     Post.getPost(req.params.id).then(function (post) {
         User.getUser(req.user._id).then(function (user) {
             if (post.owner.toString() == user._id.toString()) {
@@ -228,27 +228,27 @@ router.delete('/post/:id', isLoggedIn, function (req, res) {
     });
 });
 
-router.get('/signup', function (req, res) {
+router.get('/blog/blog/signup', function (req, res) {
     res.render('login', {login_form: login_form.toHTML()})
 });
 
-router.post('/signup', passport.authenticate('local-signup', {
+router.post('/blog/blog/signup', passport.authenticate('local-signup', {
     successRedirect: '/admin',
     failureRedirect: '/admin/signup',
     failureFlash: true
 }));
 
-router.get('/login', function (req, res) {
+router.get('/blog/blog/login', function (req, res) {
     res.render('login', {login_form: login_form.toHTML()});
 });
 
-router.post('/login', passport.authenticate('local-login', {
+router.post('/blog/blog/login', passport.authenticate('local-login', {
     successRedirect: '/admin',
     failureRedirect: '/admin/login',
     failureFlash: true
 }));
 
-router.get('/logout', isLoggedIn, function (req, res) {
+router.get('/blog/blog/logout', isLoggedIn, function (req, res) {
     req.logout();
     res.redirect('/');
 });
@@ -260,7 +260,7 @@ function isLoggedIn(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/admin/login');
+    res.redirect('/blog/blog/login');
 }
 function isEmpty(obj) {
     return !Object.keys(obj).length;
