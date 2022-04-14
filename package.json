@@ -7,7 +7,7 @@
     "start-debug": "node $NODE_DEBUG_OPTION ./bin/www"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "aws-sdk": "^2.2.37",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.2",
